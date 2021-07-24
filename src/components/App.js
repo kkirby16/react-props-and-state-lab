@@ -23,23 +23,37 @@ class App extends React.Component {
 
   getPets = () => {
     if (this.state.filters.type === "all") {
-      fetch(`http://localhost:3001/api/pets`)
-        .then((response) => response.json())
+      fetch(`/api/pets`)
+        .then((response) => response.json()
         .then((pets) => {
-          pets.data.forEach((pet) => {
-            this.state.pets.push(pet);
+          const petsArray = []
+          pets.forEach((pet) => {
+            petsArray.push(pet)
+            this.setState({
+              pets: {...petsArray}
+            })
+            // this.state.pets.push(pet);
           });
         });
     } else {
-      fetch(`http://localhost:3001/api/pets?type=${this.state.filters.type}`)
-        .then((response) => response.json())
+      fetch(`/api/pets?type=${this.state.filters.type}`)
+        .then((response) => response.json()
         .then((pets) => {
-          pets.data.forEach((pet) => {
-            this.state.pets.push(pet);
+          const petsArray = []
+          pets.forEach((pet) => {
+            petsArray.push(pet)
+            this.setState({
+              pets: {...petsArray}
+            })
+            
           });
         });
+   
+      }
     }
-  };
+    
+
+
 
   adoptPet = () => {};
 
@@ -58,7 +72,7 @@ class App extends React.Component {
               />
             </div>
             <div className="twelve wide column">
-              <PetBrowser onAdoptPet={this.adoptPet} pets={this.state.pets} />
+              <PetBrowser onAdoptPet={this.adoptPet} />
             </div>
           </div>
         </div>
