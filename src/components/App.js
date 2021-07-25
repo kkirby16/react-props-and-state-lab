@@ -17,6 +17,7 @@ class App extends React.Component {
 
   changeType = (event) => {
     this.setState({
+      ...this.state,
       filters: { ...this.state.filters, type: event.target.value },
     });
   };
@@ -24,38 +25,34 @@ class App extends React.Component {
   getPets = () => {
     if (this.state.filters.type === "all") {
       fetch(`/api/pets`)
-        .then((response) => response.json()
+        .then((response) => response.json())
         .then((pets) => {
-          const petsArray = []
-          pets.forEach((pet) => {
-            petsArray.push(pet)
-            this.setState({
-              pets: {...petsArray}
-            })
-            // this.state.pets.push(pet);
+          this.setState({
+            ...this.state,
+            pets: pets,
           });
+          // console.log(petsArray);
+          // this.state.pets.push(pet);
         });
     } else {
       fetch(`/api/pets?type=${this.state.filters.type}`)
-        .then((response) => response.json()
+        .then((response) => response.json())
         .then((pets) => {
-          const petsArray = []
-          pets.forEach((pet) => {
-            petsArray.push(pet)
-            this.setState({
-              pets: {...petsArray}
-            })
-            
+          this.setState({
+            ...this.state,
+            pets: pets,
           });
         });
-   
-      }
     }
-    
+  };
 
-
-
-  adoptPet = () => {};
+  adoptPet = (id) => {
+    //console.log("adoptingPet", id);
+    const matchingPet = this.state.pets.find((pet) => pet.id === id);
+    // console.log("matchingPet:", matchingPet);
+    matchingPet.isAdopted = true;
+    console.log(matchingPet);
+  };
 
   render() {
     return (
@@ -72,7 +69,7 @@ class App extends React.Component {
               />
             </div>
             <div className="twelve wide column">
-              <PetBrowser onAdoptPet={this.adoptPet} />
+              <PetBrowser onAdoptPet={this.adoptPet} pets={this.state.pets} />
             </div>
           </div>
         </div>
