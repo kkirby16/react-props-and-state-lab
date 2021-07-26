@@ -10,7 +10,7 @@ class Pet extends React.Component {
   };
 
   render() {
-    // console.log("pet:", this.props);
+    console.log("pet:", this.props.pet);
     return (
       <div className="card">
         <div className="content">
@@ -27,7 +27,7 @@ class Pet extends React.Component {
           </div>
         </div>
         <div className="extra content">
-          {this.props.pet.isAdopted === true ? (
+          {this.props.pet.isAdopted ? (
             <button className="ui disabled button">Already adopted</button>
           ) : (
             <button
